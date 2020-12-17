@@ -1,0 +1,11 @@
+#Method 1 : Sort and Compare
+ sort_hights=sorted(heights)
+ ans = 0
+ for i in range(len(heights)):
+ if heights[i] != sort_hights[i]:
+        ans +=1
+ return ans
+ 
+ 
+ #Method 2 : One Liner
+ return sum(h1 != h2 for h1, h2 in zip(heights, sorted(heights)))
