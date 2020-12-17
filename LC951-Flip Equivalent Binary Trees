@@ -1,0 +1,25 @@
+# Key: Understand Leetcode Problem "100. Same Tree" first will help you understand this problem quicker
+
+# Thoughts:
+# 1. If at least one of the two root nodes is null, are they equal? if yes, true; if no, false;
+# 2. otherwise, neither node is null; if the values of the two nodes are: 2a) NOT equal, return false; 2b) equal, compare their children recursively.
+
+# Analysis:
+# Every return statement has 4 recursive calls, so In worst case, the recursion corresponds to a perfect quaternary (means 4-nary) tree, 
+# which has 4 ^ d = N ^ 2 nodes, and we have to traverse all nodes. d = logN is the depth of the binary tree. 
+# However, the problem stated that "Each value in each tree will be a unique integer in the range [0, 99]",
+# the time complexity is reduced to O(N) since at most 1 of the 2 return statement is true
+
+
+#Method 1: Recursive
+class Solution:
+    def flipEquiv(self, root1: TreeNode, root2: TreeNode) -> bool:
+        if not root1 and not root2:
+            return True
+        if root1 and not root2:
+            return False
+        if root2 and not root1:
+            return False
+        if root1.val != root2.val:
+            return False
+        return self.flipEquiv(root1.left,root2.right) and self.flipEquiv(root1.right,root2.left) or self.flipEquiv(root1.left,root2.left) and self.flipEquiv(root1.right,root2.right)
