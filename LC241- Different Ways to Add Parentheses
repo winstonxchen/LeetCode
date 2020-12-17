@@ -1,0 +1,61 @@
+#Method 1 : Divide and Conqure + Recursive(A more intuitive way but slower method)
+class Solution(object):
+    def diffWaysToCompute(self, input):
+        res=[]
+        right=[]
+        left=[]
+        if len(input) == 0:
+            return res
+        if input.find('+') == -1 and input.find('-') == -1 and input.find('*') == -1 :
+            res.append(int(input))
+        else:
+            cnt=0
+            for ch in input:
+                if ch in ['+', '-', '*']:
+                    left=self.diffWaysToCompute(input[0:cnt])
+                    right=self.diffWaysToCompute(input[cnt+1:])
+                    for l in left:
+                        for r in right:
+                            val=0
+                            if ch == '+':
+                                val = l+r
+                            elif ch == '-':
+                                val = l-r
+                            elif ch == '*':
+                                val = l*r
+                            res.append(val)
+                cnt +=1
+        return res
+
+#Method 2: Divide and Conqure + Recursive + Memoization
+
+#Key 1: The problem come to how do we group the input string? We can always group the input as left part and right part depending how we add parentheses
+#Key 2: Use memo table to speed up the process
+
+class Solution:
+    def diffWaysToCompute(self, input: str, memo={}) -> List[int]:
+        #Base Case
+        if input.isdigit():
+            return [int(input)]
+        if input in memo:
+            return memo[input]
+        res=[]
+        #Devide and Conqure part
+        for i in range(len(input)):
+            if input[i] in '+-*':
+                left=self.diffWaysToCompute(input[:i])
+                right=self.diffWaysToCompute(input[i+1:])
+                for l in left:
+                    for r in right:
+                        res.append(self.calculate(l,r,input[i]))
+        memo[input] = res
+        return res
+    #Helper Function That Helps to calculate the input
+    def calculate(self,l,r,operator):
+        if operator == '+':
+            return l+r
+        elif operator == '-':
+            return l-r
+        else:
+            return l*r
+            
