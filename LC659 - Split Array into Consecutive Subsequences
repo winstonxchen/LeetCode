@@ -1,0 +1,28 @@
+# Key Idea: A number in nums can only have two possibilities:
+# 1. Be the end of an existing sequence. We use "next_nums" to keep track the next appendable number
+# 2. Start an new sequence itself, thus we need to check if num+1, num+2 exist(since the length of sequence has to be greater than 3)
+
+#Analysis:
+#Time Complexity: O(N), Space Complexity O(N), where N == len(nums)
+
+#Method: 1 hashmap "occurence" to check if num in nums is avaible + 1 hashmap "next_nums" to keeps track of what number can be directly appended to an existing sequence.
+class Solution:
+    def isPossible(self, nums: List[int]) -> bool:
+        occurence=collections.defaultdict(int)
+        next_nums=collections.defaultdict(int)
+        for num in nums:
+            occurence[num] +=1
+        for num in nums:
+            if occurence[num] == 0:
+                continue
+            elif next_nums[num] >0 :
+                next_nums[num] -=1
+                next_nums[num+1] +=1
+            elif occurence[num+1] > 0 and occurence[num+2] >0 :
+                occurence[num+1] -= 1
+                occurence[num+2] -= 1
+                next_nums[num+3] +=1
+            else:
+                return False
+            occurence[num] -= 1
+        return True
