@@ -1,0 +1,17 @@
+#Key Idea: if the glass in position[row][col] is more than full(>1), than we the water flows to next row in position [row+1][col] and [row+1][col+1]
+# and the amount of water in next row will be (position[row][col] - 1) / 2.0
+
+#Analysis:
+#Time Complexity: O(Row^2), Space Complexity O(Row^2), in this problem, if the maximun row is fixed, both time and spce can be seemed as O(1)
+
+#Method: Simulation + DP
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        res = [[0.0 for _ in range(i)] for i in range(1, query_row + 2)]
+        res[0][0] = poured
+        for row in range(query_row):
+            for col in range(len(res[row])):
+                if res[row][col] > 1:
+                    res[row+1][col] += (res[row][col] - 1) / 2.0
+                    res[row+1][col+1] +=(res[row][col] - 1) / 2.0
+        return res[query_row][query_glass] if res[query_row][query_glass] <= 1 else 1
