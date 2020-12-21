@@ -1,0 +1,25 @@
+#Key: We Define f(i,m)=sum(piles[i:])−min(f(i+x,max(m,x))) as the maximun number of stone Alex can get in pile[i:] with the range [1,2M](current m=M)
+# when current player pick stones from i to i+x-1
+# -> the other player's stones: dp[i+x, max(m, x)]
+# -> total stones of current player: A[i] - dp[i+x, max(m, x)]
+# If we want maximize the stones Alex can get, we want to maximize the stone Lee can get, thats where the "min" in the function comes from
+
+#Analysis: Time: O(N^2), Space: O(N^2)
+
+#Method: Top Down DP + LRU
+from functools import lru_cache
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        n = len(piles)
+        #Calculate the preSum to speed up the calculating
+        for i in range(n - 2, -1, -1):
+            piles[i] += piles[i + 1]
+        
+        @lru_cache(None)
+        def dp(i, m):
+            if i + 2 * m >= n: 
+                return piles[i]
+            #Function We difined above
+            return piles[i] - min(dp(i + x, max(m, x)) for x in range(1, 2 * m + 1))
+        return dp(0, 1)
+
