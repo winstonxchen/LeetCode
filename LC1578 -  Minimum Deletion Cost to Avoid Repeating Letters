@@ -1,0 +1,39 @@
+#Key: 1. Go Greedy. 2. Minimum cost for deleting repeating elements in a repeating group = leave the largest 1 element in the group
+
+#Time: O(N^2). Space: O(1)
+
+class Solution:
+    def minCost(self, s: str, cost: List[int]) -> int:
+        #Method 2 : Using maximum
+        res=0
+        start=0
+        end=1
+        while start < len(s) and end < len(s):
+            if s[end] != s[start]:
+                start +=1
+                end +=1
+            else:
+                while end < len(s) and s[end] == s[start]:
+                    end +=1
+                res += (sum(cost[start:end])-max(cost[start:end]))
+                start = end
+                end +=1
+        return res
+        
+        
+        
+        #Method 1 : Using MinHeap
+        res=0
+        start=0
+        end=1
+        while start < len(s) and end < len(s):
+            if s[end] != s[start]:
+                start +=1
+                end +=1
+            else:
+                while end < len(s) and s[end] == s[start]:
+                    end +=1
+                res +=sum(heapq.nsmallest(end-start-1,cost[start:end]))
+                start = end
+                end +=1
+        return res
