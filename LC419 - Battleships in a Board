@@ -1,0 +1,39 @@
+# Key: Method 1: Classic DFS Board Problem, find the target, modify the board and the run a DFS
+# Method 2 : Try to find the most top left 'X' on the boardm since the battleship can only be 1*N or N*1
+
+# Analysis: 
+# Method 1 : Time: O(MxN), worst case O(M×N) in case that the grid map is filled with battleships where DFS goes by M×N deep.
+# Method 2 : Time: O(MxN), Space:O(1), One pass, without modyfying the board
+
+
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
+        
+        #Method 2 : Try to find the "Top Left X"
+        res=0
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == 'X':
+                    flag = 1
+                    if i > 0 and board[i-1][j] == 'X':
+                        flag =0
+                    if j > 0 and board[i][j-1] == 'X':
+                        flag = 0
+                    res += flag
+        return res
+        
+        
+#Method 1 : DFS + Modyfying Board
+#         cnt=0
+#         for i in range(len(board)):
+#             for j in range(len(board[0])):
+#                 if board[i][j]  == 'X':
+#                     cnt +=1
+#                     self.dfs(board,i,j)
+#         return cnt
+#     def dfs(self,board,row,col):
+#         board[row][col] = '#'
+#         dirs=[(0,1),(1,0),(0,-1),(-1,0)]
+#         for dx,dy in dirs:
+#             if 0 <= row+dx < len(board) and  0 <= col+dy < len(board[0]) and board[row+dx][col+dy] == 'X':
+#                 self.dfs(board,row+dx,col+dy)
