@@ -1,0 +1,45 @@
+# Key : In a BST, inorder traversal will give you sorted treenode values, hence successor is the smallest node in the inorder traversal after the current one.
+
+# Method 2 : Time: O(h), where h is the height of the target node, space O(1); 
+# Method 1 : Time: O(N),Space O(N) 
+
+class Solution:
+    def inorderSuccessor(self, root: 'TreeNode', p: 'TreeNode') -> 'TreeNode':
+    # Method 2: Utilizing the property of Binary Search Tree, if the current node is greater than the target node, it might be a candidate, so we keep searching the 
+    # left sub tree to see we can find one that is smaller than current
+        candidate=None
+        curr=root
+        while curr:
+            if curr.val>p.val:
+                candidate=curr
+                curr=curr.left
+            else:
+                curr=curr.right
+        return candidate
+    
+    
+# Method 1 : My own method...go though whole tree twice            
+#         q=collections.deque()
+#         q.append(root)
+#         l=[]
+#         while q:
+#             node=q.popleft()
+#             l.append(node.val)
+#             if node.left:
+#                 q.append(node.left)
+#             if node.right:
+#                 q.append(node.right)
+#         l.sort()
+#         idx=l.index(p.val)
+#         if idx==len(l)-1:
+#             return None
+#         q.append(root)
+#         while q:
+#             node=q.popleft()
+#             if node.val == l[idx+1]:
+#                 return node
+#             if node.left:
+#                 q.append(node.left)
+#             if node.right:
+#                 q.append(node.right)
+        
